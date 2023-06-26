@@ -1,0 +1,23 @@
+{
+    "name": "flc",
+    "version": "1.0.0",
+    "description": "In this kata your task is to refactor the code for a small game. When finished it should be easy to add new tile types, or make the key draw as a circle, so we can easily distinguish it from the lock.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ProSleeper/FLC.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/ProSleeper/FLC/issues"
+    },
+    "homepage": "https://github.com/ProSleeper/FLC#readme",
+    "dependencies": {
+        "typescript": "^5.1.3"
+    }
+}
