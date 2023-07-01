@@ -32,9 +32,9 @@ interface Input {
     handle(): void;
 }
 
-class Right implements Input {
+class InputDir implements Input {
     isRight() {
-        return true;
+        return false;
     }
     isLeft() {
         return false;
@@ -46,60 +46,43 @@ class Right implements Input {
         return false;
     }
     handle = () => {
+        console.log("need override");
+    };
+}
+
+class Right extends InputDir {
+    override isRight() {
+        return true;
+    }
+    override handle = () => {
         moveHorizontal(1);
     };
 }
 
-class Left implements Input {
-    isRight() {
-        return false;
-    }
-    isLeft() {
+class Left extends InputDir {
+    override isLeft() {
         return true;
     }
-    isUp() {
-        return false;
-    }
-    isDown() {
-        return false;
-    }
-    handle = () => {
+
+    override handle = () => {
         moveHorizontal(-1);
     };
 }
 
-class Up implements Input {
-    isRight() {
-        return false;
-    }
-    isLeft() {
-        return false;
-    }
-    isUp() {
+class Up extends InputDir {
+    override isUp() {
         return true;
     }
-    isDown() {
-        return false;
-    }
-    handle = () => {
+    override handle = () => {
         moveVertical(-1);
     };
 }
 
-class Down implements Input {
-    isRight() {
-        return false;
-    }
-    isLeft() {
-        return false;
-    }
-    isUp() {
-        return false;
-    }
-    isDown() {
+class Down extends InputDir {
+    override isDown() {
         return true;
     }
-    handle = () => {
+    override handle = () => {
         moveVertical(1);
     };
 }
@@ -175,9 +158,13 @@ function update() {
 
 const handleInputs = () => {
     while (inputs.length > 0) {
-        let input: Input = inputs.pop();
-        input.handle();
+        let current: Input = inputs.pop();
+        handleInput(current);
     }
+};
+
+const handleInput = (input: Input) => {
+    input.handle();
 };
 
 const updateMap = () => {
