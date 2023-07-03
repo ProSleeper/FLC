@@ -28,46 +28,28 @@ enum RawInput {
 }
 
 interface Input {
-    userInput: RawInput;
-    getCurrDir(): boolean;
     handle(): void;
 }
 
 class Right implements Input {
-    constructor(public userInput: RawInput) {}
-    getCurrDir = () => {
-        return this.userInput === RawInput.RIGHT;
-    };
     handle = () => {
         moveHorizontal(1);
     };
 }
 
 class Left implements Input {
-    constructor(public userInput: RawInput) {}
-    getCurrDir = () => {
-        return this.userInput === RawInput.LEFT;
-    };
     handle = () => {
         moveHorizontal(-1);
     };
 }
 
 class Up implements Input {
-    constructor(public userInput: RawInput) {}
-    getCurrDir = () => {
-        return this.userInput === RawInput.UP;
-    };
     handle = () => {
         moveVertical(-1);
     };
 }
 
 class Down implements Input {
-    constructor(public userInput: RawInput) {}
-    getCurrDir = () => {
-        return this.userInput === RawInput.DOWN;
-    };
     handle = () => {
         moveVertical(1);
     };
@@ -224,8 +206,8 @@ const UP_KEY = "ArrowUp";
 const RIGHT_KEY = "ArrowRight";
 const DOWN_KEY = "ArrowDown";
 window.addEventListener("keydown", (e) => {
-    if (e.key === LEFT_KEY || e.key === "a") inputs.push(new Left(RawInput.LEFT));
-    else if (e.key === UP_KEY || e.key === "w") inputs.push(new Up(RawInput.UP));
-    else if (e.key === RIGHT_KEY || e.key === "d") inputs.push(new Right(RawInput.RIGHT));
-    else if (e.key === DOWN_KEY || e.key === "s") inputs.push(new Down(RawInput.DOWN));
+    if (e.key === LEFT_KEY || e.key === "a") inputs.push(new Left());
+    else if (e.key === UP_KEY || e.key === "w") inputs.push(new Up());
+    else if (e.key === RIGHT_KEY || e.key === "d") inputs.push(new Right());
+    else if (e.key === DOWN_KEY || e.key === "s") inputs.push(new Down());
 });
