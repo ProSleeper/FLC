@@ -41,6 +41,23 @@ class Resting implements FallingState {
     }
 }
 
+class FallStrategy {
+    constructor(private falling: FallingState) {}
+    isFalling() {
+        return this.falling;
+    }
+    update(tile: Tile, x: number, y: number): void {
+        this.falling = map[y + 1][x].isAir() ? new Falling() : new Resting();
+        this.drop(tile, x, y);
+    }
+    drop(tile: Tile, x: number, y: number) {
+        if (this.falling.isFalling()) {
+            map[y + 1][x] = tile;
+            map[y][x] = new Air();
+        }
+    }
+}
+
 interface Tile {
     isAir(): boolean;
     isLock1(): boolean;
@@ -148,7 +165,10 @@ class Player implements Tile {
 }
 
 class Stone implements Tile {
-    constructor(private falling: FallingState) {}
+    private fallStrategy: FallStrategy;
+    constructor(falling: FallingState) {
+        this.fallStrategy = new FallStrategy(falling);
+    }
     isAir() {
         return false;
     }
@@ -168,21 +188,18 @@ class Stone implements Tile {
 
     moveVertical(dy: number): void {}
     moveHorizontal(dx: number): void {
-        this.falling.moveHorizontal(this, dx);
+        this.fallStrategy.isFalling().moveHorizontal(this, dx);
     }
     update(x: number, y: number): void {
-        if (map[y + 1][x].isAir()) {
-            this.falling = new Falling();
-            map[y + 1][x] = this;
-            map[y][x] = new Air();
-        } else if (this.falling.isFalling()) {
-            this.falling = new Resting();
-        }
+        this.fallStrategy.update(this, x, y);
     }
 }
 
 class Box implements Tile {
-    constructor(private falling: FallingState) {}
+    private fallStrategy: FallStrategy;
+    constructor(falling: FallingState) {
+        this.fallStrategy = new FallStrategy(falling);
+    }
     isAir() {
         return false;
     }
@@ -202,16 +219,10 @@ class Box implements Tile {
     moveVertical(dy: number): void {}
 
     moveHorizontal(dx: number): void {
-        this.falling.moveHorizontal(this, dx);
+        this.fallStrategy.isFalling().moveHorizontal(this, dx);
     }
     update(x: number, y: number): void {
-        if (map[y + 1][x].isAir()) {
-            this.falling = new Falling();
-            map[y + 1][x] = this;
-            map[y][x] = new Air();
-        } else if (this.falling.isFalling()) {
-            this.falling = new Resting();
-        }
+        this.fallStrategy.update(this, x, y);
     }
 }
 
